@@ -1,4 +1,4 @@
-package com.QuantityMeasurementApp;
+package UtilityClasses;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
