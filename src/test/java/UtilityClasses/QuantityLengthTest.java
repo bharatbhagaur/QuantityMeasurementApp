@@ -1,11 +1,7 @@
 package UtilityClasses;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
-
-
-
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -269,4 +265,57 @@ class QuantityLengthTest {
                 q1.add(null)
         );
     }
+    @Test
+void testAddition_ExplicitTargetUnit_Inches() {
+    QuantityLength result =
+            QuantityLength.add(
+                    new QuantityLength(1.0, LengthUnit.FEET),
+                    new QuantityLength(12.0, LengthUnit.INCH),
+                    LengthUnit.INCH
+            );
+
+    assertEquals(
+            new QuantityLength(24.0, LengthUnit.INCH),
+            result
+    );
+}
+@Test
+void testAddition_ExplicitTargetUnit_Feet() {
+    QuantityLength result =
+            QuantityLength.add(
+                    new QuantityLength(1.0, LengthUnit.FEET),
+                    new QuantityLength(12.0, LengthUnit.INCH),
+                    LengthUnit.FEET
+            );
+
+    assertEquals(
+            new QuantityLength(2.0, LengthUnit.FEET),
+            result
+    );
+}
+@Test
+void testAddition_ExplicitTargetUnit_Yards() {
+    QuantityLength result =
+            QuantityLength.add(
+                    new QuantityLength(1.0, LengthUnit.FEET),
+                    new QuantityLength(12.0, LengthUnit.INCH),
+                    LengthUnit.YARDS
+            );
+
+    assertEquals(
+            new QuantityLength(2.0 / 3.0, LengthUnit.YARDS),
+            result
+    );
+}
+@Test
+void testAddition_NullTargetUnit() {
+    assertThrows(
+            IllegalArgumentException.class,
+            () -> QuantityLength.add(
+                    new QuantityLength(1.0, LengthUnit.FEET),
+                    new QuantityLength(12.0, LengthUnit.INCH),
+                    null
+            )
+    );
+}
 }
