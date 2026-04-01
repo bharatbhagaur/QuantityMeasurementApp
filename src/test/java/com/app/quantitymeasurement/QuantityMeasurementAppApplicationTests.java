@@ -40,10 +40,20 @@ class QuantityMeasurementAppApplicationTests {
     
     @org.junit.jupiter.api.BeforeEach
     void setUpAuth() {
-        ResponseEntity<String> response = restTemplate
-                .withBasicAuth("user", "password")
-                .postForEntity("http://localhost:" + port + "/api/auth/login", null, String.class);
-        String token = response.getBody();
+        // Create user
+        Map<String, String> creds = new java.util.HashMap<>();
+        creds.put("username", "user");
+        creds.put("password", "password");
+        
+        try {
+            restTemplate.postForEntity("http://localhost:" + port + "/api/auth/signup", creds, String.class);
+        } catch (Exception e) {} // ignore if already exists
+        
+        // Login to get token
+        ResponseEntity<Map> response = restTemplate
+                .postForEntity("http://localhost:" + port + "/api/auth/login", creds, Map.class);
+        String token = response.getBody().get("token").toString();
+        
         restTemplate.getRestTemplate().getInterceptors().clear();
         restTemplate.getRestTemplate().getInterceptors().add((request, body, execution) -> {
             request.getHeaders().add("Authorization", "Bearer " + token);
